@@ -135,6 +135,22 @@ Full host map: [cloud-endpoints.md](cloud-endpoints.md).
 
 ---
 
+## Credential storage on the phone
+
+The app persists account state — including the **IoTVideo access token** (`iotAccessToken`) — in a
+**Tencent MMKV** key-value store (`AccountSPApiImpl`, file `KV_FILE_ACCOUNT_SHARED`), not in
+Android's `EncryptedSharedPreferences` or Keystore. The account store is opened with a **null MMKV
+crypt key**, i.e. **unencrypted at rest** — MMKV without a crypt key is a plain memory-mapped file
+in the app's private data directory. Per-camera **device passwords** are stored as
+`contactPassword` in the device list.
+
+So a rooted device, an app-data backup, or a lost/seized phone can yield the access token and device
+passwords in the clear. The token is the material that gates the P2P session
+([protocol-iotvideo.md](protocol-iotvideo.md)). See [security-findings.md](security-findings.md) #3.
+Whether the user's Yoosee **account login password** is also persisted (and how) is not yet traced.
+
+---
+
 ## Open Questions for Follow-up Tasks
 
 1. ~~Does `gwell.cc` handle auth?~~ No: auth and binding are on `openapi-iot.cloudlinks.cn` ([protocol.md](protocol.md)).

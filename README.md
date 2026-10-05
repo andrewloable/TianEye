@@ -77,27 +77,53 @@ or they contain device IDs and passwords.
 Steps 2–3 (decompile and document) are done; step 1 (on-wire capture) is the pending hardware
 phase — several findings below are marked as needing a capture to confirm.
 
-Findings so far (Yoosee app 6.46.1, static analysis plus one test camera):
+Findings so far (Yoosee app 6.46.1, static analysis plus one test camera), in a suggested reading
+order — start at the top for the big picture, go deeper as needed:
 
-| Topic | Doc |
-|-------|-----|
-| Can the cloud be cut off? Verdict: block it, don't impersonate it | [cloud-redirect.md](docs/cloud-redirect.md) |
-| Every domain and IP the app uses | [cloud-endpoints.md](docs/cloud-endpoints.md) |
-| What data leaves the network | [data-inventory.md](docs/data-inventory.md), [privacy-uploads.md](docs/privacy-uploads.md), [camera-uploads.md](docs/camera-uploads.md) |
-| What TianEye can keep locally instead | [local-storage.md](docs/local-storage.md) |
-| Live view in the browser (WebRTC, measured) | [live-view.md](docs/live-view.md) |
-| Finding cameras on the LAN | [discovery.md](docs/discovery.md) |
-| What the camera's ONVIF actually supports (streams only; no events, no PTZ) | [onvif.md](docs/onvif.md) |
-| PTZ, settings, SD playback | [camera-control.md](docs/camera-control.md) |
-| Adding a camera; Wi-Fi provisioning | [add-camera.md](docs/add-camera.md) |
-| Alarms and push | [alarm-delivery.md](docs/alarm-delivery.md) |
-| Firmware updates | [ota-firmware.md](docs/ota-firmware.md) |
-| Cloud API, signing, crypto | [protocol.md](docs/protocol.md), [crypto-and-auth.md](docs/crypto-and-auth.md) |
-| The app and its native libraries | [app-overview.md](docs/app-overview.md), [native-libs.md](docs/native-libs.md) |
-| Controlling a camera directly on the LAN (no cloud) | [direct-control.md](docs/direct-control.md) |
-| Go-rewrite build guide for the camera SDKs | [protocol-go-guide.md](docs/protocol-go-guide.md) |
-| IoTVideo P2P protocol (transport, session, crypto, app layer) | [protocol-iotvideo.md](docs/protocol-iotvideo.md) |
-| Legacy Gwell P2P protocol | [protocol-gwell.md](docs/protocol-gwell.md) |
+**1. Orientation — read these first**
+
+1. [cloud-redirect.md](docs/cloud-redirect.md) — the bottom-line verdict: cut the cloud by
+   **blocking** it (not impersonating), and why. Start here; it frames everything else.
+2. [security-findings.md](docs/security-findings.md) — consolidated security & privacy weaknesses
+   (plaintext Wi-Fi setup, reversible device passwords, uploads-on-by-default, unauthenticated
+   ONVIF, …), ranked, each linking to the detail.
+3. [app-overview.md](docs/app-overview.md) — what the app is: package, the two P2P SDKs, the
+   big picture.
+
+**2. What leaves the network, and where it goes**
+
+4. [cloud-endpoints.md](docs/cloud-endpoints.md) — every domain and IP, and how each is used.
+5. [data-inventory.md](docs/data-inventory.md) — every data item that leaves the LAN.
+6. [privacy-uploads.md](docs/privacy-uploads.md) + [camera-uploads.md](docs/camera-uploads.md) —
+   the images and video the app and camera upload.
+
+**3. What TianEye can do locally instead**
+
+7. [local-storage.md](docs/local-storage.md) — for each thing the cloud stores, can we keep it
+   locally?
+8. [discovery.md](docs/discovery.md) — finding cameras on the LAN.
+9. [onvif.md](docs/onvif.md) — what the camera's ONVIF really supports (streams only; no events/PTZ).
+10. [live-view.md](docs/live-view.md) — the proven media path: camera RTSP → browser over WebRTC.
+
+**4. Controlling the camera**
+
+11. [camera-control.md](docs/camera-control.md) — live video, PTZ, image/night settings, SD playback.
+12. [add-camera.md](docs/add-camera.md) — provisioning a camera onto Wi-Fi and binding it.
+13. [alarm-delivery.md](docs/alarm-delivery.md) — how alarms and push notifications work.
+14. [ota-firmware.md](docs/ota-firmware.md) — firmware updates.
+15. [direct-control.md](docs/direct-control.md) — the LAN/AP paths that need no cloud.
+
+**5. Protocol internals**
+
+16. [protocol.md](docs/protocol.md) — the cloud HTTP API and request signing.
+17. [crypto-and-auth.md](docs/crypto-and-auth.md) — TLS trust, signing, RTSP auth, P2P certification.
+18. [native-libs.md](docs/native-libs.md) — inventory of the `.so` libraries.
+
+**6. Reimplementing the camera SDKs in Go** (deepest; read the guide first)
+
+19. [protocol-go-guide.md](docs/protocol-go-guide.md) — the build order and what gates cloud-free control.
+20. [protocol-iotvideo.md](docs/protocol-iotvideo.md) — IoTVideo P2P: transport, session, crypto, app layer.
+21. [protocol-gwell.md](docs/protocol-gwell.md) — the legacy Gwell P2P stack.
 
 ## Tested cameras
 
