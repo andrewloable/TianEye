@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # ponytail: steps skip until their sources exist; drop the ifs once cmd/ and web/ land.
+      - uses: actions/setup-go@v7
+        if: hashFiles('**/*.go') != ''
+        with:
+          go-version-file: go.mod
+      - if: hashFiles('**/*.go') != ''
+        run: go vet ./... && go test ./...
+
+      - uses: actions/setup-node@v7
+        if: hashFiles('web/package-lock.json') != ''
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - if: hashFiles('web/package-lock.json') != ''
+        working-directory: web
+        run: npm ci && npx ng build && npx ng test --watch=false

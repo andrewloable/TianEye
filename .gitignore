@@ -1,0 +1,30 @@
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+
+# Build output
+/tianeye
+web/dist/
+web/.angular/
+node_modules/
+
+# Local config and camera data: credentials, LAN IPs, real footage. Never commit.
+.env
+*.local.yaml
+/data/
+/recordings/
+*.mp4
+*.mkv
+*.h264
+*.h265
+
+# Reverse-engineering inputs: proprietary code, device IDs, passwords. Never commit.
+/re/
+*.apk
+*.xapk
+*.apks
+*.pcap
+*.pcapng
+spike
