@@ -125,6 +125,11 @@ order — start at the top for the big picture, go deeper as needed:
 20. [protocol-iotvideo.md](docs/protocol-iotvideo.md) — IoTVideo P2P: transport, session, crypto, app layer.
 21. [protocol-gwell.md](docs/protocol-gwell.md) — the legacy Gwell P2P stack.
 
+**7. Doing the on-wire work** (the deferred hardware phase)
+
+22. [capturing.md](docs/capturing.md) — how to capture and decrypt phone↔camera↔cloud traffic on
+    macOS (tools, commands, filters); the gateway to confirming everything marked "needs capture".
+
 ## Tested cameras
 
 Addresses are placeholders ([TEST-NET-1](https://en.wikipedia.org/wiki/Reserved_IP_addresses));
