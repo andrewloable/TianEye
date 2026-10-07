@@ -8,9 +8,15 @@
   Self-hosted control for Yoosee IP cameras, with no Yoosee cloud and no Yoosee app.
 </p>
 
-> **Status:** planning / reverse-engineering. The Yoosee app and camera protocols have been
-> analysed and written up under [`docs/`](docs/); implementation hasn't started. This README
-> describes what the project intends to do and what the analysis found.
+> **Status: on hold (2026-10-07).** The Yoosee app and camera protocols are analysed and written
+> up under [`docs/`](docs/); no implementation code exists yet. Paused at a decision point: on the
+> newer **IoTVideo** cameras, PTZ and native SD-card playback ride a **cloud-token-gated** P2P
+> session, so strict zero-token feature parity with the Yoosee app isn't achievable for those two
+> features — they'd need a one-time token read (runtime traffic still stays local), the unconfirmed
+> LAN-local auth path (`te-qgj.9`), or a local control interface found in the camera firmware.
+> Local **live view, recording, playback (TianEye-recorded), motion alerts and discovery** remain
+> fully feasible with no cloud. Resuming depends on that direction call and the hardware firmware
+> work. This README and the docs capture what the analysis found.
 
 ## Why
 
